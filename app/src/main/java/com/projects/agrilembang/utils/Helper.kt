@@ -10,3 +10,7 @@ fun String?.BottomBar(): Boolean {
         Screen.Riwayat.route
     )
 }
+
+fun String?.Fab(): Boolean {
+    return this.toString() in Screen.Riwayat.route
+}

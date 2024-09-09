@@ -28,5 +28,22 @@ import com.projects.agrilembang.ui.theme.intersemibold
 @Composable
 fun KelembapanScreen() {
 
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 30.dp, start = 25.dp, end = 25.dp)
+    ){
+        Text(
+            text = "Kelembapan",
+            fontSize = 20.sp,
+            fontFamily = intersemibold
+        )
+        Spacer(modifier = Modifier.height(15.dp)
+        )
+        KelembapanLayout(title = "Sensor 1")
+        KelembapanLayout(title = "Sensor 2")
+    }
 }
 

@@ -1,11 +1,13 @@
 package com.projects.agrilembang
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,6 +17,11 @@ import androidx.navigation.compose.rememberNavController
 import com.projects.agrilembang.navigation.Screen
 import com.projects.agrilembang.utils.BottomBar
 import com.projects.agrilembang.ui.Components.BottomBar.BottomBar
+import com.projects.agrilembang.ui.Components.fab.FabIcon
+import com.projects.agrilembang.ui.Components.fab.FabOption
+import com.projects.agrilembang.ui.Components.fab.MultiFabItem
+import com.projects.agrilembang.ui.Components.fab.MultiFloatingActionButton
+import com.projects.agrilembang.ui.Components.fab.fabOption
 import com.projects.agrilembang.ui.Presentation.ForgotPassword.ForgotPasswordScreen
 import com.projects.agrilembang.ui.Presentation.ForgotPassword.NewPasswordScreen
 import com.projects.agrilembang.ui.Presentation.ForgotPassword.OTPScreen
@@ -25,6 +32,7 @@ import com.projects.agrilembang.ui.Presentation.Menu.Riwayat.RiwayatScreen
 import com.projects.agrilembang.ui.Presentation.Menu.Suhu.SuhuScreen
 import com.projects.agrilembang.ui.Presentation.Register.RegisterScreen
 import com.projects.agrilembang.ui.Presentation.Splash.SplashScreen
+import com.projects.agrilembang.utils.Fab
 
 @Composable
 fun AgriLembangApp(
@@ -34,11 +42,41 @@ fun AgriLembangApp(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val context = LocalContext.current
+    val fabIcon = FabIcon(
+        expandIconRes = R.drawable.closeicon,
+        collapseIconRes = R.drawable.printicon
+    )
 
     Scaffold (
         bottomBar = {
             AnimatedVisibility(visible = currentRoute.BottomBar()) {
                 BottomBar(navController = navController)
+            }
+        },
+        floatingActionButton = {
+            AnimatedVisibility(visible = currentRoute.Fab()) {
+                MultiFloatingActionButton(
+                    items = listOf(
+                        MultiFabItem(
+                            id = 1,
+                            iconRes = R.drawable.csvicon,
+                            label = "CSV"
+                        ),
+                        MultiFabItem(
+                            id = 2,
+                            iconRes = R.drawable.pdficon,
+                            label = "PDF"
+                        ),
+                    ),
+                    fabIcon = fabIcon,
+                    onFabItemClicked = {
+                        Toast.makeText(context, it.label, Toast.LENGTH_SHORT).show()
+                    },
+                    fabOption = fabOption(
+                        iconTint = Color.White,
+                        showLabel = true
+                    )
+                )
             }
         }
     ){

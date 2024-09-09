@@ -6,13 +6,15 @@ import androidx.compose.runtime.Stable
 
 @Immutable
 interface FabIcon {
-    @Stable val iconRes : Int
-    @Stable val iconRotate : Float?
+    @Stable val expandIconRes : Int
+    @Stable val collapseIconRes : Int
 }
 
 private class FabIconImpl(
-    override val iconRes: Int,
-    override val iconRotate: Float?
+    override val expandIconRes: Int,
+    override val collapseIconRes: Int
 ): FabIcon
 
-fun FabIcon(@DrawableRes iconRes: Int, iconRotate: Float? = null): FabIcon = FabIconImpl(iconRes, iconRotate)
+fun FabIcon(
+    @DrawableRes expandIconRes: Int,
+    @DrawableRes collapseIconRes: Int): FabIcon = FabIconImpl(expandIconRes, collapseIconRes)

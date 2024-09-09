@@ -22,6 +22,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,13 +38,11 @@ fun MultiFloatingActionButton(
     onFabItemClicked: (fabItem: MultiFabItem) -> Unit,
     stateChanged: (fabState: MultiFabState) -> Unit = {}
 ) {
-    val rotation by animateFloatAsState(
-        if (fabState.value == MultiFabState.Expand){
-            fabIcon.iconRotate ?: 0f
-        } else {
-            0f
-        }
-    )
+    val currentIcon = if(fabState.value.isExpanded()){
+        fabIcon.expandIconRes
+    } else {
+        fabIcon.collapseIconRes
+    }
 
     Column(
         modifier = modifier.wrapContentSize(),
@@ -59,9 +59,28 @@ fun MultiFloatingActionButton(
                 verticalArrangement = Arrangement.spacedBy(15.dp)
             ){
                 items(items.size){ index ->
-
+                    MiniFabItem(
+                        item = items[index],
+                        fabOption = fabOption,
+                        onFabItemClicked = onFabItemClicked
+                    )
                 }
+                item {  }
             }
+        }
+        FloatingActionButton(
+            onClick = {
+            fabState.value = fabState.value.toggleValue()
+            stateChanged(fabState.value)
+        },
+            contentColor = fabOption.iconTint,
+            containerColor = fabOption.backgroundTint
+        ) {
+            Icon(
+                painter = painterResource(id = currentIcon),
+                contentDescription = "FAB",
+                tint = fabOption.iconTint
+            )
         }
     }
 }
@@ -98,6 +117,13 @@ fun MiniFabItem(
             containerColor = fabOption.backgroundTint,
             contentColor = fabOption.iconTint
         ) {
+            Icon(
+                painter = painterResource(id = item.iconRes),
+                contentDescription = "Float Icon",
+                tint = fabOption.iconTint,
+                modifier = Modifier
+                    .size(25.dp)
+            )
         }
     }
 }
